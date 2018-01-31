@@ -1,0 +1,68 @@
+swagger: 2.0
+basePath: /api
+info:
+  version: 1.0
+  title: API Spotippos
+  description: API que disponibiliza endpoints para criacao de imovel nas provincias de Spotippos
+  contact:
+    name: Suporte Murilo
+    url: http://fale-conosco.mmc.com.br/portal/faleconosco
+    email: suporte@mmc.com.br
+
+schemes:
+  - https
+
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+
+tags:
+  - name: autorizacao
+    description: Define o ponto de entrada para acesso às informações do cartão
+  - name: cartoes
+    description: Informações sobre o cartão indicado
+  - name: conta
+    description: Informações sobre a conta cartao
+
+responses:
+  '503':
+    schema:
+      description: Um problema de comunicação com os servidores de backend ocorreu
+      $ref: '#/definitions/Erro'
+
+paths:
+  /api/spotippos/imovel:
+    post:
+      tags:
+        - autorizacao
+      summary: Operação para obtenção de um token JWT válido
+      operationId: login
+      parameters:
+        - in: body
+          schema:
+            $ref: '#/definitions/Credenciais'
+      responses:
+        '200':
+          description: Requisição efetuada e atendida com sucesso
+          headers:
+            Authorization Bearer:
+              description: <Token JWT>
+              type: string
+        '401':
+          description: Acesso não autorizado.
+          schema:
+            $ref: '#/definitions/Erro'
+
+  
+
+  Erro:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Código HTTP retornado
+      messagem:
+        type: string
+        description: Mensagem amigável para o utilizador da API com explicação do erro
