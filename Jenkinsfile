@@ -1,8 +1,8 @@
 pipeline {
   agent {
     docker {
-      image 'maven:4.0.0-jdk-8'
       args '-v /home/murilo/java/.m2:/root/.m2'
+      image 'maven'
     }
     
   }
