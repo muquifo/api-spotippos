@@ -1,6 +1,5 @@
 pipeline {
-  agent {label 'master'}
-
+  agent any
   stages {
     stage('Initialize') {
       steps {
@@ -8,22 +7,22 @@ pipeline {
       }
     }
     stage('Build') {
-		steps {
-			dir('api') {
-				echo 'Iniciando BUILD'
-				withMaven(maven: 'maven', mavenSettingsConfig: 'maven-conf') {
-					sh 'mvn clean package'
-				}
-			}
-		}
-	}
-    stage('Teste') {
-		steps {
-			echo 'Iniciando TESTE'
-        	withMaven(maven: 'maven', mavenSettingsConfig: 'maven-conf') {
-				sh 'mvn clean test'
-			}
-      	}
+      steps {
+        echo 'Iniciando Build'
+        sh 'mvn clean package'
+      }
     }
+    stage('Teste') {
+      steps {
+        echo 'Iniciando TESTE'
+        withMaven(maven: 'maven', mavenSettingsConfig: 'maven-conf') {
+          sh 'mvn clean test'
+        }
+        
+      }
+    }
+  }
+  environment {
+    agent = 'master'
   }
 }
