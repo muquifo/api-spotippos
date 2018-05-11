@@ -1,5 +1,4 @@
 pipeline {
-  agent any
   stages {
     stage('Initialize') {
       steps {
@@ -14,10 +13,9 @@ pipeline {
         maven: 'maven',
         // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
         // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
-        mavenSettingsConfig: 'maven-conf',
-        mavenLocalRepo: '.repository') {
+        mavenSettingsConfig: 'maven-conf') {
  
-      	sh "mvn clean install"
+      	sh "mvn clean package"
  
     	} // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
       }
@@ -25,9 +23,9 @@ pipeline {
     stage('Teste') {
       steps {
         echo 'Iniciando TESTE'
-        withMaven(maven: 'maven', mavenSettingsConfig: 'maven-conf') {
-          sh 'mvn clean test'
-        }
+         withMaven(aven: 'maven',mavenSettingsConfig: 'maven-conf') {
+      		sh "mvn test"
+    	}
         
       }
     }
